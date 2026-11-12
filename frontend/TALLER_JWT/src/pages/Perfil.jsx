@@ -11,113 +11,159 @@ import { useAuth } from '../context/AuthContext';
 // Importamos la URL base de nuestra API
 import { API_BASE_URL } from '../config/apiConfig';
 
-function Perfil(){
+function Perfil() {
 
-    // Estado para almacenar los datos del perfil del usuario
+    // Estados para almacenar los datos del perfil y los mensajes
     const [datosPerfil, setDatosPerfil] = useState('');
-
-    // Estado para almacenar posibles mensajes de error
     const [error, setError] = useState('');
 
-    // Obtenemos el token JWT del contexto de autenticación
+    // Obtenemos el token JWT y la función para cerrar sesión
     const { token, logout } = useAuth();
 
     // Permite realizar redirecciones entre páginas
     const navigate = useNavigate();
 
-    // useEffect ejecuta la carga del perfil cuando cambia el token
+    // Consultamos el perfil cuando cambia el token
     useEffect(() => {
 
-        // Función asíncrona para consultar los datos del perfil
         const cargarPerfil = async () => {
-            
+
             try {
-                // Realizamos una petición GET al endpoint del perfil
                 const response = await fetch(`${API_BASE_URL}/auth/perfil`, {
                     headers: {
-                        // Enviamos el token JWT para identificar al usuario
                         'Authorization': `Bearer ${token}`
                     }
                 });
 
-                // Verificamos si la respuesta del servidor fue correcta
                 if (!response.ok) {
-                    throw new Error('No se pudo cargar el perfil, iniciar nuevamente sesion');
+                    throw new Error('No se pudo cargar el perfil, inicia nuevamente sesión');
                 }
 
-                // Convertimos la respuesta del servidor a formato JSON
                 const datos = await response.json();
-
-                // Guardamos los datos recibidos en el estado
                 setDatosPerfil(datos);
 
-            }catch (error){
-
-                // Guardamos el mensaje de error para mostrarlo en pantalla
+            } catch (error) {
                 setError(error.message);
             }
-
-            };
-
-            // Ejecutamos la función para cargar el perfil
-            cargarPerfil();
-
-        },[token]);
-
-        // Función para cerrar la sesión del usuario
-        const manejarLogout = async () => {
-            try{
-
-                // Enviamos una petición POST para revocar el token JWT
-                await fetch(`${API_BASE_URL}/auth/logout`, {
-                    method: 'POST',
-                    headers: {
-                        // Enviamos el token que queremos revocar
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-
-            }catch (error){
-
-                // Mostramos un mensaje si ocurre un problema de conexión
-                console.log('Error de red al intetar revocar el token: ', error);
-
-            }
-
-            // Cerramos la sesión localmente
-            logout();
-
-            // Redirigimos al usuario a la página de inicio de sesión
-            navigate('/login');
         };
 
-        return (
-            <div>
-                <div>
-                    <h2>Perfil de Usuario</h2>
+        cargarPerfil();
 
-                    {/* Botón que ejecuta el cierre de sesión */}
-                    <button onClick={manejarLogout}>
-                        Cerrar Sesion
-                    </button>
+    }, [token]);
+
+    // Función para cerrar la sesión
+    const manejarLogout = async () => {
+
+        try {
+            await fetch(`${API_BASE_URL}/auth/logout`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+        } catch (error) {
+            console.log('Error de red al intentar revocar el token:', error);
+        }
+
+        logout();
+        navigate('/login');
+    };
+
+    return (
+        <div className="perfil-page">
+
+            {/* Encabezado principal */}
+            <header className="perfil-header">
+                <div className="perfil-logo">
+                    JWT<span>.</span>
                 </div>
 
-                {/* Mostramos el mensaje de error si existe */}
-                {error && <p>{error}</p>}
+                <button className="logout-button" onClick={manejarLogout}>
+                    Cerrar sesión
+                </button>
+            </header>
 
-                {/* Mostramos los datos del perfil cuando están disponibles */}
-                {datosPerfil && (
-                      <div>
-                    <p>{datosPerfil.Mensaje}</p>
-                    <p>{datosPerfil.Usuario}</p>
-                    <p>{datosPerfil.rol_Detectado}</p>
-                    <p>{datosPerfil.Status}</p>
-                </div>
+            {/* Contenido del perfil */}
+            <main className="perfil-main">
+
+                <section className="perfil-welcome">
+                    <span className="perfil-subtitle">PANEL DE USUARIO</span>
+                    <h1>¡Bienvenido!</h1>
+                    <p>Tu sesión se encuentra activa y protegida mediante autenticación JWT.</p>
+                </section>
+
+                {/* Mensaje de error */}
+                {error && (
+                    <div className="perfil-error">
+                        {error}
+                    </div>
                 )}
-            </div>
-        )
-    }
 
-    // Exportamos el componente para utilizarlo en otras partes del proyecto
-    export default Perfil;
+                {/* Información recibida del backend */}
+                {datosPerfil && (
+                    <section className="perfil-card">
+
+                        <div className="perfil-card-header">
+                            <div className="perfil-avatar">
+                                {datosPerfil.Usuario?.charAt(0).toUpperCase()}
+                            </div>
+
+                            <div>
+                                <h2>{datosPerfil.Usuario}</h2>
+                                <p>Cuenta de usuario</p>
+                            </div>
+
+                            <span className="perfil-badge">
+                                Activo
+                            </span>
+                        </div>
+
+                        <div className="perfil-divider"></div>
+
+                        <h3>Información de la cuenta</h3>
+
+                        <div className="perfil-info-grid">
+
+                            <div className="perfil-info-item">
+                                <span>Usuario</span>
+                                <strong>{datosPerfil.Usuario}</strong>
+                            </div>
+
+                            <div className="perfil-info-item">
+                                <span>Rol asignado</span>
+                                <strong>{datosPerfil.rol_Detectado}</strong>
+                            </div>
+
+                            <div className="perfil-info-item">
+                                <span>Estado de sesión</span>
+                                <strong className="perfil-status">
+                                    {datosPerfil.Status}
+                                </strong>
+                            </div>
+
+                        </div>
+
+                        <div className="perfil-security">
+                            <span>🔐</span>
+                            <div>
+                                <strong>Autenticación segura</strong>
+                                <p>{datosPerfil.Mensaje}</p>
+                            </div>
+                        </div>
+
+                    </section>
+                )}
+
+            </main>
+
+            <footer className="perfil-footer">
+                Sistema de autenticación JWT · React & Spring Boot
+            </footer>
+
+        </div>
+    );
+}
+
+// Exportamos el componente
+export default Perfil;
