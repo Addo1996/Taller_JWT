@@ -20,7 +20,7 @@ function Perfil(){
     const [error, setError] = useState('');
 
     // Obtenemos el token JWT del contexto de autenticación
-    const { token } = useAuth();
+    const { token, logout } = useAuth();
 
     // Permite realizar redirecciones entre páginas
     const navigate = useNavigate();
@@ -89,7 +89,7 @@ function Perfil(){
             logout();
 
             // Redirigimos al usuario a la página de inicio de sesión
-            navigate('/Login');
+            navigate('/login');
         };
 
         return (

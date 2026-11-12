@@ -1,11 +1,11 @@
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config/apiConfig';
 
-
 function Login() {
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -44,38 +44,85 @@ function Login() {
     };
 
     return (
-        <div>
-            <h2>Inicio de sesión</h2>
-            <form onSubmit={manejarSubmit}>
-                <div>
-                    <label>Usuario: </label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
+        <div className="auth-page">
+
+            {/* Panel visual izquierdo */}
+            <section className="auth-visual">
+                <div className="visual-content">
+                    <span className="visual-logo">JWT</span>
+
+                    <h1>Bienvenido de nuevo</h1>
+
+                    <p>
+                        Accede a tu cuenta y continúa disfrutando
+                        de nuestro sistema seguro de autenticación.
+                    </p>
+
+                    <div className="visual-decoration">
+                        <div className="decoration-circle"></div>
+                        <div className="decoration-card">
+                            <span>🔐</span>
+                            <h3>Acceso seguro</h3>
+                            <p>Protección mediante JWT</p>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label>Contraseña: </label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+            </section>
+
+            {/* Panel del formulario */}
+            <section className="auth-content">
+
+                <div className="auth-card">
+
+                    <span className="form-subtitle">Bienvenido</span>
+
+                    <h2>Inicio de sesión</h2>
+
+                    <p className="form-description">
+                        Ingresa tus datos para acceder a tu cuenta.
+                    </p>
+
+                    <form onSubmit={manejarSubmit}>
+
+                        <div className="form-group">
+                            <label>Usuario</label>
+                            <input
+                                type="text"
+                                placeholder="Ingresa tu usuario"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Contraseña</label>
+                            <input
+                                type="password"
+                                placeholder="Ingresa tu contraseña"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        {error && <p className="error-message">{error}</p>}
+
+                        <button type="submit" className="auth-button">
+                            Iniciar sesión
+                        </button>
+
+                    </form>
+
+                    <div className="form-footer">
+                        <p>¿No tienes una cuenta?</p>
+                        <Link to="/registrar">Crear una cuenta</Link>
+                    </div>
+
                 </div>
-                {error && <p>{error}</p>}
-                <button type="submit">
-                    Iniciar sesión
-                </button>
-                <p>
-                    ¿No tienes una cuenta?{' '}
-                    <button type="button" onClick={() => navigate('/registrar')}>
-                        Registrarse
-                    </button>
-                </p>
-            </form>
+
+            </section>
+
         </div>
     );
 }
