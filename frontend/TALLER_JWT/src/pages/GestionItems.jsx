@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { API_BASE_URL } from '../config/apiConfig'
 import { useAuth } from '../context/AuthContext'
+import './ListaItems.css'
 
 function GestionItems() {
 
