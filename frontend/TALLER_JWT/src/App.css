@@ -490,3 +490,38 @@
         font-size: 13px;
     }
 }
+
+/* Opciones del panel de usuario */
+.perfil-opciones {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 25px 0;
+    flex-wrap: wrap;
+}
+
+.perfil-opciones button {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 8px;
+    background-color: #2563eb;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.perfil-opciones button:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+    .perfil-opciones {
+        flex-direction: column;
+    }
+
+    .perfil-opciones button {
+        width: 100%;
+    }
+}

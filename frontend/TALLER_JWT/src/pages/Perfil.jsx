@@ -92,6 +92,18 @@ function Perfil() {
                     <h1>¡Bienvenido!</h1>
                     <p>Tu sesión se encuentra activa y protegida mediante autenticación JWT.</p>
                 </section>
+                {/* Accesos a las funcionalidades del sistema */}
+                <section className="perfil-opciones">
+
+                    <button onClick={() => navigate('/videojuegos')}>
+                        Ver catálogo de videojuegos
+                    </button>
+
+                    <button onClick={() => navigate('/gestion')}>
+                        Gestionar videojuegos
+                    </button>
+
+                </section>
 
                 {/* Mensaje de error */}
                 {error && (
