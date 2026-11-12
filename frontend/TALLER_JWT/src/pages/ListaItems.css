@@ -1,0 +1,56 @@
+
+.lista-items {
+    padding: 30px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.lista-items h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.grid-videojuegos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.card-videojuego {
+    background-color: white;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s;
+}
+
+.card-videojuego:hover {
+    transform: translateY(-5px);
+}
+
+.card-videojuego img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.card-videojuego h3 {
+    margin: 15px 0 8px;
+    color: #222;
+}
+
+.card-videojuego p {
+    color: #666;
+}
+
+@media (max-width: 600px) {
+    .lista-items {
+        padding: 15px;
+    }
+
+    .grid-videojuegos {
+        grid-template-columns: 1fr;
+    }
+}

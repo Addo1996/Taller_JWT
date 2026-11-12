@@ -6,6 +6,8 @@ import Login from './pages/Login'
 import Perfil from './pages/Perfil'
 import ProtectedRoute from './components/ProtectedRoute'
 import Registrar from './pages/Registrar'
+import GestionItems from './pages/GestionItems'
+import ListaItems from './pages/ListaItems'
 
 function App() {
    return (
@@ -20,7 +22,8 @@ function App() {
 
                <Route element={<ProtectedRoute />}>
                   <Route path="/perfil" element={<Perfil />} />
-   
+                  <Route path="/gestion" element={<GestionItems />} />
+                  <Route path="/videojuegos" element={<ListaItems />} />
                </Route>
 
                <Route path="*" element={<Navigate to="/login" replace />} />
